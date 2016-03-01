@@ -66,7 +66,337 @@
 </p>
                 <p class="uk-article-lead" itemprop="description">Short version of this post</p>
                 <section itemprop="articleBody"><p>This is the actual content of the post </p>
-<h1>Try different md to the post.</h1></section>
+<h1>Try different md to the post.</h1>
+<p>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Project Name: Random Forest</span>
+
+<span class="sd">Created on Fri Nov 13 09:17:12 2015</span>
+
+<span class="sd">@author: TTao</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">read_csv</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">patsy</span> <span class="kn">import</span> <span class="n">dmatrices</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">df</span><span class="o">=</span><span class="n">read_csv</span><span class="p">(</span><span class="s">&#39;C:/Users/TTao/Documents/001_Project/001_11012015_New Probability Renewal/testing.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># Data partition</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">msk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mf">0.8</span>
+<span class="n">df_train</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">msk</span><span class="p">]</span>
+<span class="n">df_test</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">msk</span><span class="p">]</span>
+
+<span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_train</span><span class="p">)</span>
+<span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_test</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>129918
+32539
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># create dataframes with an intercept column and dummy variables </span>
+<span class="n">y_train</span><span class="p">,</span> <span class="n">X_train</span> <span class="o">=</span> <span class="n">dmatrices</span><span class="p">(</span><span class="s">&#39;renewed ~ C(regionname) + numberofstories + C(markettype) + constructionyear + unitscount + unittypetotalunitcount + stabilizationdatetonow + </span><span class="se">\</span>
+<span class="s">                  term + C(bedrooms) + squarefootage + ratetype + C(expmonth) + los&#39;</span><span class="p">,</span> <span class="n">df_train</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&quot;dataframe&quot;</span><span class="p">)</span>
+
+<span class="n">y_test</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">dmatrices</span><span class="p">(</span><span class="s">&#39;renewed ~ C(regionname) + numberofstories + C(markettype) + constructionyear + unitscount + unittypetotalunitcount + stabilizationdatetonow + </span><span class="se">\</span>
+<span class="s">                  term + C(bedrooms) + squarefootage + ratetype + C(expmonth) + los&#39;</span><span class="p">,</span> <span class="n">df_test</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s">&quot;dataframe&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="k">print</span> <span class="n">X_train</span><span class="o">.</span><span class="n">columns</span>
+
+<span class="c"># flatten y into a 1-D array</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Index([u&apos;Intercept&apos;, u&apos;C(regionname)[T.NORTHEAST]&apos;, u&apos;C(regionname)[T.SOUTH]&apos;,
+       u&apos;C(regionname)[T.WEST]&apos;, u&apos;C(markettype)[T.SECONDARY]&apos;,
+       u&apos;C(markettype)[T.TERTIARY]&apos;, u&apos;C(bedrooms)[T.1]&apos;, u&apos;C(bedrooms)[T.2]&apos;,
+       u&apos;C(bedrooms)[T.3]&apos;, u&apos;C(bedrooms)[T.4]&apos;, u&apos;C(bedrooms)[T.5]&apos;,
+       u&apos;C(expmonth)[T.2]&apos;, u&apos;C(expmonth)[T.3]&apos;, u&apos;C(expmonth)[T.4]&apos;,
+       u&apos;C(expmonth)[T.5]&apos;, u&apos;C(expmonth)[T.6]&apos;, u&apos;C(expmonth)[T.7]&apos;,
+       u&apos;C(expmonth)[T.8]&apos;, u&apos;C(expmonth)[T.9]&apos;, u&apos;C(expmonth)[T.10]&apos;,
+       u&apos;C(expmonth)[T.11]&apos;, u&apos;C(expmonth)[T.12]&apos;, u&apos;numberofstories&apos;,
+       u&apos;constructionyear&apos;, u&apos;unitscount&apos;, u&apos;unittypetotalunitcount&apos;,
+       u&apos;stabilizationdatetonow&apos;, u&apos;term&apos;, u&apos;squarefootage&apos;, u&apos;ratetype&apos;,
+       u&apos;los&apos;],
+      dtype=&apos;object&apos;)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># Gaussian Naive Bayes</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.569163158056
+0.563124432334
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># Multinomial Naive Bayes</span>
+<span class="c"># MultinomialNB implements the naive Bayes algorithm for multinomially distributed data, </span>
+<span class="c"># and is one of the two classic naive Bayes variants used in text classification </span>
+<span class="c"># (where the data are typically represented as word vector counts, although tf-idf vectors are also known to work well </span>
+<span class="c"># in practice). </span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">MultinomialNB</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">MultinomialNB</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.594148560189
+0.593335796425
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># Bernoulli Naive Bayes</span>
+<span class="c"># BernoulliNB implements the naive Bayes training and classification algorithms for data </span>
+<span class="c"># that is distributed according to multivariate Bernoulli distributions.</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">BernoulliNB</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">BernoulliNB</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.577153569563
+0.573992826244
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># Nearest Neighbors Classification</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.68619195427
+0.598762296218
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># Stochastic Gradient Descent</span>
+
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">()</span>
+<span class="c">#result = clf.fit(X_test,y_test)</span>
+
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">result</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.994990626633
+0.536692375191
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></p></section>
                 <a href="/my-first-post.html#disqus_thread"></a>
                 <hr class="uk-article-divider">
             </article>
@@ -77,7 +407,7 @@
                 <p class="uk-article-meta"><time datetime="2016-02-27" itemprop="datePublished">Sat 27 February 2016</time> • <a href="/category/python.html">Python</a></p>
 </p>
                 <p class="uk-article-lead" itemprop="description">Short version of this post again</p>
-                <p>This is the actual content of the post Try different md to the post....</p>
+                <p>This is the actual content of the post Try different md to the post. [gist:id=e5dc6162f7a96a745db3]...</p>
                 <a href="/my-second-post.html">Read More</a>
                 <hr class="uk-article-divider">
         </article>
