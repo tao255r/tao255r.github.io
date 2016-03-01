@@ -80,7 +80,128 @@
         <p class="uk-article-lead" itemprop="description">Short version of this post again</p>
         <section itemprop="articleBody"><p>This is the actual content of the post </p>
 <h1>Try different md to the post.</h1>
-<p>[gist:id=e5dc6162f7a96a745db3]</p></section>
+<div class="gist">
+    <script src='https://gist.github.com/e5dc6162f7a96a745db3.js'></script>
+    <noscript>
+        <pre><code>var sample = [
+  [0,1],
+  [0,2],
+  [0,3],
+  [3,8],
+  [3,9],
+  [4,8],
+  [4,10],
+
+  [3,1],
+  [5,3],
+  [6,7],
+  [8,3],
+  [3,4],
+  [6,3],
+  [1,10],
+  [9,3],
+  [4,7],
+  [6,3],
+  [2,5],
+  [7,9]
+]
+
+var k_values = [
+  [2,1],
+  [5,4]
+]
+
+
+var old_ks = k_values;
+var new_ks = kMeans(old_ks, sample);
+var inn = 0;
+
+// can't do recursive cause will hit stack limit
+while (!equalKs(old_ks, new_ks)) {
+  console.log("ks: ", old_ks ,"--", new_ks);
+  old_ks = new_ks;
+  new_ks = kMeans(new_ks, sample);
+  
+  // just in case
+  inn += 1;
+  if (inn > 1000) break;
+}
+
+console.log("final: ", new_ks);
+
+
+// functions
+
+function equalKs(k1, k2) {
+  var res = true;
+
+  k1.forEach(function(vec,i) {
+    vec.forEach(function(v,_i) {
+      if (k1[i][_i] !== k2[i][_i]) res = false;
+    });
+  });
+
+  return res;
+}
+
+function kMeans(ks, vectors) {
+  var clusters = [];
+  ks.forEach(function() { clusters.push([])})
+
+  vectors.forEach(function(v,i) {
+    var index = closestTo(v, ks);
+    clusters[index].push(v)
+  });
+
+  var new_ks = [];
+
+  ks.forEach(function(v,i) {
+    new_ks.push(geometricCenter(clusters[i]));
+  });
+
+  return new_ks;
+}
+
+function closestTo(vec, ks) {
+  var k_distances = [];
+  ks.forEach(function(v,i) {
+    k_distances.push(sumOfSquares(vec,v));
+  });
+
+  return k_distances.indexOf(Math.min.apply(Math, k_distances));
+}
+
+function geometricCenter(vs) {
+  var sums = [];
+
+  vs[0].forEach(function(v,i) {
+    var sum = 0;
+    vs.forEach(function(_v,_i) {
+      sum += vs[_i][i];
+    });
+    sums.push(sum);
+  });
+
+  var vec = [];
+
+  sums.forEach(function(v,i) {
+    var res = Math.round((v/vs.length)*1000)/1000
+    vec.push(res);
+  });
+  return vec;
+}
+
+function sumOfSquares(v1, v2) {
+  var sum = 0;
+
+  v1.forEach(function(v,i) {
+    sum += (v2[i] - v1[i])*(v2[i] - v1[i]);
+  })
+
+  return sum;
+}</code></pre>
+    </noscript>
+</div></section>
         <hr class="uk-article-divider">
     </article>
 
